@@ -7,21 +7,19 @@ router.get('/movies', async (req, res) => {
     res.json(movie);
 });
 
-router.get('/movie/add/:title/:description/:dateRelease', async (req, res, next) => {
+router.post('/movie/add/', async (req, res, next) => {
 
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization");
 
-    const { title } = req.params;
-    const { description } = req.params;
-    const { dateRelease } = req.params;
-
-    var movieJson = { title: title, description: description, dateRelease: dateRelease };
-
-    const movie = new Movie(movieJson);
+    const movie = new Movie(req.body);
 
     await movie.save();
 
-    res.send('Movie saved');
+    var response = { code: 200, status: 'Ok' };
+
+    res.json(response);
 });
 
 module.exports = router;
